@@ -1,0 +1,4 @@
+name: FasterCart
+version: '${project.version}'
+main: me.lia_lv.fastercart.FasterCart
+api-version: '1.13'
