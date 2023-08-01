@@ -1,30 +1,32 @@
 package me.lia_lv.fastercart;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import com.osiris.dyml.exceptions.*;
+import me.lia_lv.fastercart.commands.CommandManager;
+import me.lia_lv.fastercart.config.DefaultConfig;
+import me.lia_lv.fastercart.languages.LocaleConfig;
+import me.lia_lv.fastercart.listener.VehicleExitListener;
+import me.lia_lv.fastercart.listener.VehicleMoveListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class FasterCart extends JavaPlugin {
 
     protected static FasterCart instance;
     public String consolePrefix;
-    private BukkitAudiences adventure;
     public boolean isPluginLoaded = false;
     protected PlatformManager platformManager;
     private PlatformManager.Platforms serverPlatform;
+    protected DefaultConfig configManager;
+    protected LocaleConfig localeManager;
+    protected CommandManager commandManager;
 
     public FasterCart() {
-        this.consolePrefix = ChatColor.translateAlternateColorCodes('&', "&b&l[FasterBoat] ") + ChatColor.RESET;
-    }
-
-    public @NotNull BukkitAudiences getAdventure() {
-        if (this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
+        this.consolePrefix = ChatColor.translateAlternateColorCodes('&', "&b&l[FasterCart] ") + ChatColor.RESET;
     }
 
     public static FasterCart getInstance() {
@@ -36,24 +38,38 @@ public class FasterCart extends JavaPlugin {
         console.sendMessage(this.consolePrefix + ChatColor.translateAlternateColorCodes('&', str));
     }
 
-    private double getServerVersion() {
-        String version = this.getServer().getBukkitVersion().split("-")[0];
-        String ver1 = version.split("\\.")[0] + "." + version.split("\\.")[1];
-        return Double.parseDouble(ver1);
-    }
-
     public PlatformManager getPlatformManager() {
         if (platformManager == null) {
-            this.platformManager = new PlatformManager();
+            this.platformManager = new PlatformManager(this);
         }
         return this.platformManager;
     }
 
+    public CommandManager getCommandManager() {
+        if (commandManager == null) {
+            this.commandManager = new CommandManager(this);
+        }
+        return this.commandManager;
+    }
+
+    public DefaultConfig getConfigManager() {
+        if (configManager == null) {
+            this.configManager = new DefaultConfig(this);
+        }
+        return this.configManager;
+    }
+
+    public LocaleConfig getLocaleManager() {
+        if (localeManager == null) {
+            this.localeManager = new LocaleConfig(this);
+        }
+        return this.localeManager;
+    }
+
     @Override
     public void onEnable() {
-        this.adventure = BukkitAudiences.create(this);
         instance = this;
-        double serverVersion = this.getServerVersion();
+        double serverVersion = this.getPlatformManager().getServerVersion();
 
         if (this.getPlatformManager().isCraftBukkit()) {
             this.consoleLogger("&cThis plugin doesn't work with CraftBukkit!");
@@ -77,23 +93,49 @@ public class FasterCart extends JavaPlugin {
 
         this.consoleLogger("&eServer Info : &f&l" + this.serverPlatform.friendlyName + " " + serverVersion);
 
+        this.getCommand("fastercart").setExecutor(this.getCommandManager());
+        //this.getCommand("fastercart").setTabCompleter(this.getTabCompleter());
+
+        this.loadConfig(this.isPluginLoaded);
+        this.consoleLogger("&eConfig files loaded.");
+
+        this.registerListeners();
+        this.consoleLogger("&eListener enabled.");
 
         this.isPluginLoaded = true;
         this.consoleLogger("&ePlugin has been enabled successfully.");
     }
 
-    @Override
-    public void onDisable() {
-        this.closeAdventureAPI();
+    private void registerListeners() {
+        PluginManager pluginManager = this.getServer().getPluginManager();
 
-        this.consoleLogger("&ePlugin has been disabled successfully.");
+        pluginManager.registerEvents(new VehicleMoveListener(this), this);
+        pluginManager.registerEvents(new VehicleExitListener(), this);
     }
 
-    private void closeAdventureAPI() {
-        if (this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
+    public boolean loadConfig(boolean reload) {
+        try {
+            this.getConfigManager().load();
+            this.getLocaleManager().load();
+        } catch (NotLoadedException | YamlReaderException | IOException | IllegalKeyException | DuplicateKeyException | IllegalListException | YamlWriterException ex) {
+            ex.printStackTrace();
+            this.consoleLogger("&cThere was a problem loading the config files.");
+            this.consoleLogger("&cPlease check there if there are any modifications.");
+            this.consoleLogger("&cIf nothing has been modified, please contact the developer.");
+            return false;
         }
+
+        if (reload) {
+            this.consoleLogger(this.getLocaleManager().getConfigFileReloaded());
+            this.consoleLogger(this.getLocaleManager().getLocaleFileReloaded());
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onDisable() {
+        this.consoleLogger("&ePlugin has been disabled successfully.");
     }
 
 

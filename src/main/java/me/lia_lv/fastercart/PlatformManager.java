@@ -2,6 +2,12 @@ package me.lia_lv.fastercart;
 
 public class PlatformManager {
 
+    private FasterCart plugin;
+
+    public PlatformManager(FasterCart plugin) {
+        this.plugin = plugin;
+    }
+
     private Platforms getPlatform() {
         Platforms platform;
 
@@ -29,6 +35,12 @@ public class PlatformManager {
 
     public boolean isCraftBukkit() {
         return this.getPlatform().equals(Platforms.CRAFTBUKKIT);
+    }
+
+    public double getServerVersion() {
+        String version = this.plugin.getServer().getBukkitVersion().split("-")[0];
+        String ver1 = version.split("\\.")[0] + "." + version.split("\\.")[1];
+        return Double.parseDouble(ver1);
     }
 
 
