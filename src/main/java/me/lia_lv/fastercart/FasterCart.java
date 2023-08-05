@@ -2,6 +2,7 @@ package me.lia_lv.fastercart;
 
 import com.osiris.dyml.exceptions.*;
 import me.lia_lv.fastercart.commands.CommandManager;
+import me.lia_lv.fastercart.commands.TabCompletion;
 import me.lia_lv.fastercart.config.DefaultConfig;
 import me.lia_lv.fastercart.languages.LocaleConfig;
 import me.lia_lv.fastercart.listener.VehicleExitListener;
@@ -24,6 +25,7 @@ public class FasterCart extends JavaPlugin {
     protected DefaultConfig configManager;
     protected LocaleConfig localeManager;
     protected CommandManager commandManager;
+    protected TabCompletion tabCompleteManager;
 
     public FasterCart() {
         this.consolePrefix = ChatColor.translateAlternateColorCodes('&', "&b&l[FasterCart] ") + ChatColor.RESET;
@@ -66,6 +68,13 @@ public class FasterCart extends JavaPlugin {
         return this.localeManager;
     }
 
+    public TabCompletion getTabCompleteManager() {
+        if (tabCompleteManager == null) {
+            this.tabCompleteManager = new TabCompletion(this);
+        }
+        return this.tabCompleteManager;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -94,7 +103,7 @@ public class FasterCart extends JavaPlugin {
         this.consoleLogger("&eServer Info : &f&l" + this.serverPlatform.friendlyName + " " + serverVersion);
 
         this.getCommand("fastercart").setExecutor(this.getCommandManager());
-        //this.getCommand("fastercart").setTabCompleter(this.getTabCompleter());
+        this.getCommand("fastercart").setTabCompleter(this.getTabCompleteManager());
 
         this.loadConfig(this.isPluginLoaded);
         this.consoleLogger("&eConfig files loaded.");

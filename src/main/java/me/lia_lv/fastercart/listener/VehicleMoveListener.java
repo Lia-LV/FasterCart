@@ -39,7 +39,7 @@ public class VehicleMoveListener implements Listener {
                 return;
             }
 
-            if (!config.getCartAccelerationItemName().equalsIgnoreCase("DEFAULT_NAME")) {
+            if (!config.isCartAccelItemNameIgnore()) {
                 if (!mainHandItemMeta.getDisplayName().equals(config.getCartAccelerationItemName())) {
                     return;
                 }
@@ -53,7 +53,7 @@ public class VehicleMoveListener implements Listener {
                 return;
             }
 
-            if (!config.getCartAccelerationItemName().equalsIgnoreCase("DEFAULT_NAME")) {
+            if (!config.isCartAccelItemNameIgnore()) {
                 if (!offHandItemMeta.getDisplayName().equals(config.getCartAccelerationItemName())) {
                     return;
                 }

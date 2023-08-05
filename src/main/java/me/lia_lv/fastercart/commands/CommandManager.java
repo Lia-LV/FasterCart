@@ -62,7 +62,7 @@ public class CommandManager implements CommandExecutor {
         return subCmdExecutor.execute(this.plugin, sender, argsForSubCmd);
     }
 
-    private LiaCmd getInputSubCommand(String subCmdName) {
+    public LiaCmd getInputSubCommand(String subCmdName) {
         try {
             Class<?> subCmdClass = Class.forName("me.lia_lv.fastercart.commands.subcommands." + subCmdName.toLowerCase());
             if (LiaCmd.class.isAssignableFrom(subCmdClass)) {
@@ -75,15 +75,13 @@ public class CommandManager implements CommandExecutor {
         return null;
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private Set<Class<?>> getClassesInPackage(String packagePath) {
+    public Set<Class<?>> getClassesInPackage(String packagePath) {
         ClassLoader loader = this.plugin.getClass().getClassLoader();
         try {
             return ClassPath.from(loader).getAllClasses().stream()
                     .filter(clazz -> clazz.getPackageName().equalsIgnoreCase(packagePath))
                     .map(ClassPath.ClassInfo::load).collect(Collectors.toSet());
         } catch (IOException ex) {
-            ex.printStackTrace();
             return Collections.emptySet();
         }
     }

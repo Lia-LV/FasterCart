@@ -56,7 +56,7 @@ public class LocaleConfig {
         PERMISSION_ERROR = locale.get("Commands.PermissionError", "&cYou don't have permission for this command!", 0);
         COMMAND_NOT_EXIST = locale.get("Commands.NotExistCommand", "&cThis command doesn't exist.", 0);
         ARGUMENTS_PROPOSAL = locale.get("Commands.ArgumentsProposal", "&cUsage : /fc [proposal_placeholder]", 0);
-        locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands");
+        locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands"); //TODO: Need Work with help Command
 
         locale.save(true);
     }

@@ -38,6 +38,10 @@ public class DefaultConfig {
         return ChatColor.translateAlternateColorCodes('&', CART_ACCELERATION_ITEM_NAME);
     }
 
+    public boolean isCartAccelItemNameIgnore() {
+        return CART_ACCELERATION_ITEM_NAME.equalsIgnoreCase("DEFAULT_NAME");
+    }
+
     public String getHandToDetect() {
         return CART_ACCELERATION_ITEM_HAND_TO_DETECT;
     }
@@ -62,8 +66,9 @@ public class DefaultConfig {
         CART_ACCELERATION_ITEM_TYPE = config.get("Cart-acceleration-item.Type", Material.LEVER, 0);
         CART_ACCELERATION_ITEM_NAME = config.get("Cart-acceleration-item.Name", "&9&lCart Accelerator", 0);
         CART_ACCELERATION_ITEM_HAND_TO_DETECT = config.get("Cart-acceleration-item.Hand-To-Detect", "OFF_HAND", 0, "Set the hand to detect the item.", "Must be either \"MAIN_HAND\" or \"OFF_HAND\"!");
-        ACCELERATION_PER_ITEM_AMOUNT = config.get("Acceleration-per-item-amount", 0.02, 1, "Cart speed to be increased per amount of acceleration item the player is holding.");
+        ACCELERATION_PER_ITEM_AMOUNT = config.get("Acceleration-per-item-amount", 0.01, 1, "Cart speed to be increased per amount of acceleration item the player is holding.");
         MAXIMUM_AMOUNT_OF_ITEM_APPLIED = config.get("Maximum-amount-of-item-applied", 64, 0, "Holding above this value does not increase boat speed.");
+
 
         config.save(true);
     }

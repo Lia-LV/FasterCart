@@ -7,11 +7,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 public class reload implements LiaCmd {
 
     @Override
     public String getPerm() {
         return Perms.FASTERCART_COMMAND_ADMIN_RELOAD.getPermission();
+    }
+
+    @Override
+    public HashMap<Integer, LinkedHashMap<String, String>> getArguments() {
+        return null;
     }
 
     @Override
