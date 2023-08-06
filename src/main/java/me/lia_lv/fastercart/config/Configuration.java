@@ -27,6 +27,7 @@ SOFTWARE.
 
 package me.lia_lv.fastercart.config;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.osiris.dyml.Yaml;
 import com.osiris.dyml.YamlSection;
 import com.osiris.dyml.exceptions.*;
@@ -36,6 +37,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Optional;
 
 public class Configuration {
 
@@ -91,42 +94,60 @@ public class Configuration {
     public Material get(String path, Material defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
         YamlSection yamlSection;
         if (isPathSplitRequired(path)) {
-            yamlSection = this.config.put(pathSplit(path)).setCountTopLineBreaks(topLineBreaks).setDefValues(defaultValue.toString()).setComments(comments);
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         } else {
-            yamlSection = this.config.put(path).setCountTopLineBreaks(topLineBreaks).setDefValues(defaultValue.toString()).setComments(comments);
+            yamlSection = this.config.put(path).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
+        }
+        Optional<XMaterial> xMat = XMaterial.matchXMaterial(yamlSection.getValue().asString());
+        Material mat;
+        if (xMat.isPresent()) {
+            mat = xMat.get().parseMaterial();
+        } else {
+            mat = defaultValue;
         }
 
-        return isValueNull(yamlSection) ? defaultValue : Material.getMaterial(yamlSection.getValue().asString());
+        return isValueNull(yamlSection) ? defaultValue : mat;
+    }
+
+    public List<String> get(String path, String[] defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
+        YamlSection yamlSection;
+        if (isPathSplitRequired(path)) {
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue).setCountTopLineBreaks(topLineBreaks).setComments(comments);
+        } else {
+            yamlSection = this.config.put(path).setDefValues(defaultValue).setCountTopLineBreaks(topLineBreaks).setComments(comments);
+        }
+
+        return isValueNull(yamlSection) ? List.of(defaultValue) : yamlSection.asStringList();
     }
 
     public String get(String path, String defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
         YamlSection yamlSection;
         if (isPathSplitRequired(path)) {
-            yamlSection = this.config.put(pathSplit(path)).setCountTopLineBreaks(topLineBreaks).setDefValues(defaultValue).setComments(comments);
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         } else {
-            yamlSection = this.config.put(path).setCountTopLineBreaks(topLineBreaks).setDefValues(defaultValue).setComments(comments);
+            yamlSection = this.config.put(path).setDefValues(defaultValue).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         }
 
         return isValueNull(yamlSection) ? defaultValue : yamlSection.getValue().asString();
     }
 
-    public int get(String path, int defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
+    public int get(String path, Integer defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
         YamlSection yamlSection;
         if (isPathSplitRequired(path)) {
-            yamlSection = this.config.put(pathSplit(path)).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         } else {
-            yamlSection = this.config.put(path).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(path).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         }
 
         return isValueNull(yamlSection) ? defaultValue : yamlSection.getValue().asInt();
     }
 
-    public double get(String path, double defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
+    public double get(String path, Double defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
         YamlSection yamlSection;
         if (isPathSplitRequired(path)) {
-            yamlSection = this.config.put(pathSplit(path)).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         } else {
-            yamlSection = this.config.put(path).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(path).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         }
 
         return isValueNull(yamlSection) ? defaultValue : yamlSection.getValue().asDouble();
@@ -135,9 +156,9 @@ public class Configuration {
     public Boolean get(String path, Boolean defaultValue, int topLineBreaks, String... comments) throws NotLoadedException, IllegalKeyException {
         YamlSection yamlSection;
         if (isPathSplitRequired(path)) {
-            yamlSection = this.config.put(pathSplit(path)).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(pathSplit(path)).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         } else {
-            yamlSection = this.config.put(path).setCountTopLineBreaks(topLineBreaks).setDefValues(String.valueOf(defaultValue)).setComments(comments);
+            yamlSection = this.config.put(path).setDefValues(defaultValue.toString()).setCountTopLineBreaks(topLineBreaks).setComments(comments);
         }
 
         return isValueNull(yamlSection) ? defaultValue : yamlSection.getValue().asBoolean();

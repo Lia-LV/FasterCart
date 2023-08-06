@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class reload implements LiaCmd {
 
@@ -20,6 +21,11 @@ public class reload implements LiaCmd {
     @Override
     public HashMap<Integer, LinkedHashMap<String, String>> getArguments() {
         return null;
+    }
+
+    @Override
+    public List<String> getDescriptionMsg() {
+        return FasterCart.getInstance().getLocaleManager().getReloadCommandDescriptions();
     }
 
     @Override

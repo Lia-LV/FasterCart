@@ -6,6 +6,8 @@ import me.lia_lv.fastercart.config.Configuration;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocaleConfig {
 
@@ -16,6 +18,8 @@ public class LocaleConfig {
     private String PERMISSION_ERROR;
     private String COMMAND_NOT_EXIST;
     private String ARGUMENTS_PROPOSAL;
+    private List<String> COMMAND_DESCRIPTIONS_HELP;
+    private List<String> COMMAND_DESCRIPTIONS_RELOAD;
 
     public String getConfigFileReloaded() {
         return ChatColor.translateAlternateColorCodes('&', CONFIG_FILE_RELOADED);
@@ -41,6 +45,22 @@ public class LocaleConfig {
         return ChatColor.translateAlternateColorCodes('&', ARGUMENTS_PROPOSAL);
     }
 
+    public List<String> getHelpCommandDescriptions() {
+        List<String> results = new ArrayList<>();
+        for (String str : COMMAND_DESCRIPTIONS_HELP) {
+            results.add(ChatColor.translateAlternateColorCodes('&', str));
+        }
+        return results;
+    }
+
+    public List<String> getReloadCommandDescriptions() {
+        List<String> results = new ArrayList<>();
+        for (String str : COMMAND_DESCRIPTIONS_RELOAD) {
+            results.add(ChatColor.translateAlternateColorCodes('&', str));
+        }
+        return results;
+    }
+
     public LocaleConfig(FasterCart plugin) {
         this.plugin = plugin;
     }
@@ -55,8 +75,11 @@ public class LocaleConfig {
         RELOAD_ERROR = locale.get("Commands.ReloadError", "&cThere was a problem loading the configs file. Please check the console.", 0);
         PERMISSION_ERROR = locale.get("Commands.PermissionError", "&cYou don't have permission for this command!", 0);
         COMMAND_NOT_EXIST = locale.get("Commands.NotExistCommand", "&cThis command doesn't exist.", 0);
-        ARGUMENTS_PROPOSAL = locale.get("Commands.ArgumentsProposal", "&cUsage : /fc [proposal_placeholder]", 0);
-        locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands"); //TODO: Need Work with help Command
+        ARGUMENTS_PROPOSAL = locale.get("Commands.ArgumentsProposal", "&cUsage: /fc [proposal_placeholder]", 0);
+        locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands ( Displayed in /fc help )");
+        COMMAND_DESCRIPTIONS_HELP = locale.get("Descriptions.Help", new String[]{"&9Usage - /fc help [command]", "&6- Displays the descriptions of [command]"}, 0);
+        COMMAND_DESCRIPTIONS_RELOAD = locale.get("Descriptions.Reload", new String[]{"&9Usage - /fc reload", "&6- Reload Config & Locale files."}, 0);
+
 
         locale.save(true);
     }
