@@ -12,6 +12,13 @@ public interface LiaCmd {
 
     String getPerm();
 
+    /**
+     * Get Information of Arguments about Command.
+     *
+     * @return
+     * HashMap - Argument Digit(location) Number <br>
+     * LinkedHashMap - Argument, Permission
+     */
     HashMap<Integer, LinkedHashMap<String, String>> getArguments();
 
     List<String> getDescriptionMsg();

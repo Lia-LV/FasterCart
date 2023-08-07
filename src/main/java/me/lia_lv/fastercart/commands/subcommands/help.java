@@ -51,7 +51,6 @@ public class help implements LiaCmd {
 
     @Override
     public boolean execute(FasterCart plugin, CommandSender sender, @Nullable String[] args) {
-        //TODO: help Command Need Work (getClass and getDescriptionMsg)
         if (args == null) {
             for (String str : this.getDescriptionMsg()) {
                 sender.sendMessage(str);

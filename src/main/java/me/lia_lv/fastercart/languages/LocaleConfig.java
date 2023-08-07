@@ -18,8 +18,15 @@ public class LocaleConfig {
     private String PERMISSION_ERROR;
     private String COMMAND_NOT_EXIST;
     private String ARGUMENTS_PROPOSAL;
+    private String INVALID_ARGUMENTS_ERROR;
+    private String CONSOLE_MUST_SELECT_TARGET;
+    private String INVALID_AMOUNT_ERROR;
+    private String GETITEM_MESSAGE;
+    private String GETITEM_OTHERS_MESSAGE;
+    private String PLAYER_NOT_FOUND_ERROR;
     private List<String> COMMAND_DESCRIPTIONS_HELP;
     private List<String> COMMAND_DESCRIPTIONS_RELOAD;
+    private List<String> COMMAND_DESCRIPTIONS_GETITEM;
 
     public String getConfigFileReloaded() {
         return ChatColor.translateAlternateColorCodes('&', CONFIG_FILE_RELOADED);
@@ -45,6 +52,30 @@ public class LocaleConfig {
         return ChatColor.translateAlternateColorCodes('&', ARGUMENTS_PROPOSAL);
     }
 
+    public String getInvalidArgumentError() {
+        return ChatColor.translateAlternateColorCodes('&', INVALID_ARGUMENTS_ERROR);
+    }
+
+    public String getConsoleNoSelectTargetError() {
+        return ChatColor.translateAlternateColorCodes('&', CONSOLE_MUST_SELECT_TARGET);
+    }
+
+    public String getInvalidAmountError() {
+        return ChatColor.translateAlternateColorCodes('&', INVALID_AMOUNT_ERROR);
+    }
+
+    public String getGetItemMessage() {
+        return ChatColor.translateAlternateColorCodes('&', GETITEM_MESSAGE);
+    }
+
+    public String getGetitemOthersMessage() {
+        return ChatColor.translateAlternateColorCodes('&', GETITEM_OTHERS_MESSAGE);
+    }
+
+    public String getPlayerNotFoundError() {
+        return ChatColor.translateAlternateColorCodes('&', PLAYER_NOT_FOUND_ERROR);
+    }
+
     public List<String> getHelpCommandDescriptions() {
         List<String> results = new ArrayList<>();
         for (String str : COMMAND_DESCRIPTIONS_HELP) {
@@ -56,6 +87,14 @@ public class LocaleConfig {
     public List<String> getReloadCommandDescriptions() {
         List<String> results = new ArrayList<>();
         for (String str : COMMAND_DESCRIPTIONS_RELOAD) {
+            results.add(ChatColor.translateAlternateColorCodes('&', str));
+        }
+        return results;
+    }
+
+    public List<String> getGetitemCommandDescriptions() {
+        List<String> results = new ArrayList<>();
+        for (String str : COMMAND_DESCRIPTIONS_GETITEM) {
             results.add(ChatColor.translateAlternateColorCodes('&', str));
         }
         return results;
@@ -76,10 +115,16 @@ public class LocaleConfig {
         PERMISSION_ERROR = locale.get("Commands.PermissionError", "&cYou don't have permission for this command!", 0);
         COMMAND_NOT_EXIST = locale.get("Commands.NotExistCommand", "&cThis command doesn't exist.", 0);
         ARGUMENTS_PROPOSAL = locale.get("Commands.ArgumentsProposal", "&cUsage: /fc [proposal_placeholder]", 0);
+        INVALID_ARGUMENTS_ERROR = locale.get("Commands.InvalidArgumentsError", "&cInvalid arguments included in command!", 0);
+        CONSOLE_MUST_SELECT_TARGET = locale.get("Commands.ConsoleMustSelectTarget", "&cThe console must select a target when using this command!", 0);
+        INVALID_AMOUNT_ERROR = locale.get("Commands.InvalidAmountError", "&cThe amount must be no more than [amount_placeholder].", 0);
+        GETITEM_MESSAGE = locale.get("Commands.GetItemMessage", "&eYou received [amount_placeholder] acceleration item(s).", 0);
+        GETITEM_OTHERS_MESSAGE = locale.get("Commands.GetItemOthersMessage", "&eYou gave [amount_placeholder] acceleration item(s) to [player_placeholder].", 0);
+        PLAYER_NOT_FOUND_ERROR = locale.get("Commands.PlayerNotFoundError", "&cThe player specified doesn't exist.", 0);
         locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands ( Displayed in /fc help )");
         COMMAND_DESCRIPTIONS_HELP = locale.get("Descriptions.Help", new String[]{"&9Usage - /fc help [command]", "&6- Displays the descriptions of [command]"}, 0);
         COMMAND_DESCRIPTIONS_RELOAD = locale.get("Descriptions.Reload", new String[]{"&9Usage - /fc reload", "&6- Reload Config & Locale files."}, 0);
-
+        COMMAND_DESCRIPTIONS_GETITEM = locale.get("Descriptions.GetItem", new String[]{"&9Usage - /fc getitem (amount) (player)", "&6- Get a acceleration item(s).", "-&6 If you set a player, give items to that player."}, 0);
 
         locale.save(true);
     }
