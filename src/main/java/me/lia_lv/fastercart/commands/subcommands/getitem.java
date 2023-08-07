@@ -33,10 +33,6 @@ public class getitem implements LiaCmd {
         firstArgs.put("<integer>", this.getPerm());
         argList.put(1, firstArgs);
 
-        LinkedHashMap<String, String> secondArgs = new LinkedHashMap<>();
-        secondArgs.put("<player>", Perms.FASTERCART_COMMAND_GETITEM_OTHERS.getPermission());
-        argList.put(2, secondArgs);
-
         return argList;
     }
 
@@ -61,7 +57,6 @@ public class getitem implements LiaCmd {
            accelItemStack = new ItemStack(accelItemXMat.get().parseMaterial());
         } else {
             accelItemStack = new ItemStack(Material.LEVER);
-            return true;
         }
         if (!plugin.getConfigManager().isCartAccelItemNameIgnore()) {
             ItemMeta meta = accelItemStack.getItemMeta();
@@ -83,13 +78,11 @@ public class getitem implements LiaCmd {
         }
 
         if (args.length == 1) {
-            Player p;
             if (sender instanceof ConsoleCommandSender) {
                 sender.sendMessage(plugin.getLocaleManager().getConsoleNoSelectTargetError());
                 return true;
-            } else {
-                p = (Player) sender;
             }
+            Player p = (Player) sender;
             p.getInventory().addItem(accelItemStack);
             String getItemMsg = plugin.getLocaleManager().getGetItemMessage();
             p.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemMsg, "[amount_placeholder]", String.valueOf(amount)));

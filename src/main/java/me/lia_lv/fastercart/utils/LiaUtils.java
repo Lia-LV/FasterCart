@@ -1,5 +1,7 @@
 package me.lia_lv.fastercart.utils;
 
+import org.bukkit.Bukkit;
+
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -13,7 +15,7 @@ public class LiaUtils {
      */
     public static String replacePlaceholders(String originalString, HashMap<String, String> placeholders) {
         for (String key : placeholders.keySet()) {
-            if (originalString.toLowerCase().contains(key.toLowerCase())) {
+            if (!originalString.toLowerCase().contains(key.toLowerCase())) {
                 continue;
             }
             originalString = originalString.replaceAll("(?i)" + Pattern.quote(key), placeholders.get(key));
@@ -30,9 +32,10 @@ public class LiaUtils {
      * @return New string with replaced placeholders
      */
     public static String replacePlaceholders(String originalString, String placeholder, String stringToReplace) {
-        if (originalString.toLowerCase().contains(placeholder.toLowerCase())) {
+        if (!originalString.toLowerCase().contains(placeholder.toLowerCase())) {
             return originalString;
         }
+
         return originalString.replaceAll("(?i)" + Pattern.quote(placeholder), stringToReplace);
     }
 

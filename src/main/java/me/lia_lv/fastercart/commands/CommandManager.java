@@ -99,11 +99,11 @@ public class CommandManager implements CommandExecutor {
             try {
                 LiaCmd subCmdClass = (LiaCmd) clazz.getConstructor().newInstance();
                 if (sender.hasPermission(subCmdClass.getPerm())) {
-                    argProposal.append(subCmdClass.getClass().getSimpleName().toLowerCase()).append("|");
+                    argProposal.append(subCmdClass.getClass().getSimpleName().toLowerCase()).append(" | ");
                 }
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ignored) {}
         }
-        argProposal.replace(argProposal.toString().lastIndexOf("|"), argProposal.toString().lastIndexOf("|") + 1, "]");
+        argProposal.replace(argProposal.toString().lastIndexOf(" |"), argProposal.toString().lastIndexOf("|") + 1, "]");
 
         return localeMsg.replaceAll("(?i)" + Pattern.quote("[proposal_placeholder]"), argProposal.toString());
     }

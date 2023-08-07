@@ -124,7 +124,7 @@ public class LocaleConfig {
         locale.addCommentsOnly("Descriptions", 1, "Descriptions of commands ( Displayed in /fc help )");
         COMMAND_DESCRIPTIONS_HELP = locale.get("Descriptions.Help", new String[]{"&9Usage - /fc help [command]", "&6- Displays the descriptions of [command]"}, 0);
         COMMAND_DESCRIPTIONS_RELOAD = locale.get("Descriptions.Reload", new String[]{"&9Usage - /fc reload", "&6- Reload Config & Locale files."}, 0);
-        COMMAND_DESCRIPTIONS_GETITEM = locale.get("Descriptions.GetItem", new String[]{"&9Usage - /fc getitem (amount) (player)", "&6- Get a acceleration item(s).", "-&6 If you set a player, give items to that player."}, 0);
+        COMMAND_DESCRIPTIONS_GETITEM = locale.get("Descriptions.GetItem", new String[]{"&9Usage - /fc getitem (amount) (player)", "&6- Get a acceleration item(s).", "&6- If you set a player, give items to that player."}, 0);
 
         locale.save(true);
     }
