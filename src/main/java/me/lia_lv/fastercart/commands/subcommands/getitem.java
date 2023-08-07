@@ -93,11 +93,22 @@ public class getitem implements LiaCmd {
                 return true;
             }
             targetP.getInventory().addItem(accelItemStack);
-            String getItemOthersMsg = plugin.getLocaleManager().getGetitemOthersMessage();
+            String getItemOthersMsg = plugin.getLocaleManager().getGetitemToOthersMessage();
             HashMap<String, String> placeholderList = new HashMap<>();
             placeholderList.put("[amount_placeholder]", String.valueOf(amount));
             placeholderList.put("[player_placeholder]", targetP.getName());
-            targetP.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemOthersMsg, placeholderList));
+
+            String receivedMsg = plugin.getLocaleManager().getGetitemReceivedFromOthersMessage();
+            HashMap<String, String> placeholderListForTarget = new HashMap<>();
+            placeholderListForTarget.put("[amount_placeholder]", String.valueOf(amount));
+            if (sender instanceof ConsoleCommandSender) {
+                placeholderListForTarget.put("[sender_placeholder]", "CONSOLE");
+            } else if (sender instanceof Player) {
+                placeholderListForTarget.put("[sender_placeholder]", sender.getName());
+            }
+
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemOthersMsg, placeholderList));
+            targetP.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(receivedMsg, placeholderListForTarget));
         }
 
         return true;
