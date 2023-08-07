@@ -50,17 +50,15 @@ public class getitem implements LiaCmd {
             return true;
         }
 
-        String accelItemName = plugin.getConfigManager().getCartAccelerationItemName();
-        Optional<XMaterial> accelItemXMat = XMaterial.matchXMaterial(accelItemName);
+        Material accelItemType = plugin.getConfigManager().getCartAccelerationItemType();
+        XMaterial accelItemXMat = XMaterial.matchXMaterial(accelItemType);
         ItemStack accelItemStack;
-        if (accelItemXMat.isPresent() && accelItemXMat.get().parseMaterial() != null) {
-           accelItemStack = new ItemStack(accelItemXMat.get().parseMaterial());
-        } else {
-            accelItemStack = new ItemStack(Material.LEVER);
-        }
+        accelItemStack = accelItemXMat.parseItem();
+
         if (!plugin.getConfigManager().isCartAccelItemNameIgnore()) {
             ItemMeta meta = accelItemStack.getItemMeta();
-            meta.setDisplayName(plugin.getConfigManager().getCartAccelerationItemName());
+            String accelItemName = plugin.getConfigManager().getCartAccelerationItemName();
+            meta.setDisplayName(accelItemName);
             accelItemStack.setItemMeta(meta);
         }
 
