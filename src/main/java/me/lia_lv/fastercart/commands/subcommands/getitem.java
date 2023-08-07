@@ -104,7 +104,7 @@ public class getitem implements LiaCmd {
             HashMap<String, String> placeholderList = new HashMap<>();
             placeholderList.put("[amount_placeholder]", String.valueOf(amount));
             placeholderList.put("[player_placeholder]", targetP.getName());
-            targetP.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemOthersMsg, "[amount_placeholder]", String.valueOf(amount)));
+            targetP.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemOthersMsg, placeholderList));
         }
 
         return true;
