@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 public class getitem implements LiaCmd {
 
@@ -85,6 +84,11 @@ public class getitem implements LiaCmd {
             String getItemMsg = plugin.getLocaleManager().getGetItemMessage();
             p.sendMessage(plugin.getConfigManager().getPrefix() + LiaUtils.replacePlaceholders(getItemMsg, "[amount_placeholder]", String.valueOf(amount)));
         } else {
+            if (!sender.hasPermission(Perms.FASTERCART_COMMAND_GETITEM_OTHERS.getPermission())) {
+                sender.sendMessage(plugin.getConfigManager().getPrefix() + plugin.getLocaleManager().getPermissionError());
+                return true;
+            }
+
             Player targetP = Bukkit.getPlayer(args[1]);
             if (targetP == null) {
                 sender.sendMessage(plugin.getConfigManager().getPrefix() + plugin.getLocaleManager().getPlayerNotFoundError());
